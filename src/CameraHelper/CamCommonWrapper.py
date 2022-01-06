@@ -11,7 +11,7 @@ class CamCommonWrapper:
         self.height = int(self.vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     def get_frame(self):
-        ret = -1
+        ret = False
         if self.vid.isOpened():
             ret, frame = self.vid.read()
             if ret:
