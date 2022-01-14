@@ -7,6 +7,9 @@ class CamPylonFreerun:
         try:
             # Create an instant camera object for the camera device found first.
             self.camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
+            self.camera.Open()
+            self.width = self.camera.Width.GetValue() 
+            self.height = self.camera.Height.GetValue()
 
             # For demonstration purposes only, register another image event handler.
             self.camera.RegisterImageEventHandler(imageEvent(), pylon.RegistrationMode_Append, pylon.Cleanup_Delete)
@@ -37,6 +40,7 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
 
 if __name__ == '__main__':
     cam = CamPylonFreerun(SampleImageEventHandler)
+    print(f"image size: ({cam.height},{cam.width})")
     import time
     time.sleep(1)
     cam.Close()
