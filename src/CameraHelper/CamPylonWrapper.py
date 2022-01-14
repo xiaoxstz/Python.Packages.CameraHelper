@@ -1,5 +1,6 @@
 from pypylon import pylon # pip install pypylon
 import threading
+from .PylonImageConvert import PylonImageConvert
 
 class CamPylonWrapper:
     def __init__(self) -> None:
@@ -43,7 +44,7 @@ class CamPylonWrapper:
         grabResult = self.camera.RetrieveResult(timeout, pylon.TimeoutHandling_ThrowException)
         try:
             if grabResult.GrabSucceeded():
-                img = self.convert(grabResult)
+                img = PylonImageConvert.convert(grabResult)
                 image = img.GetArray()  # shape: (height,width)
                 grabResult.Release()
                 return (True,image)
