@@ -11,12 +11,6 @@ class CamPylonWrapper:
         # Grabing continuously (video) with minimal delay
         self.camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
-        self.__converter = pylon.ImageFormatConverter()
-
-        # converting to opencv bgr format
-        self.__converter.OutputPixelFormat = pylon.PixelType_BGR8packed
-        self.__converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
-
         # get image size
         # self.width = self.camera.Width.GetValue()    # not right value
         # self.height = self.camera.Height.GetValue()
@@ -59,12 +53,6 @@ class CamPylonWrapper:
         except Exception as e:
             print(e)
             return (False, None)
-
-
-    def convert(self,grabResult):
-        image = self.__converter.Convert(grabResult)
-        return image
-
     
     def __Close(self):
         # Releasing the resource    

@@ -30,10 +30,12 @@ class CamPylonFreerun:
         print("__del__")
         self.Close()
 
+
+import PylonImageConvert
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
+        image = PylonImageConvert.convert(grabResult)
         print("OnImageGrabbed")
-        
 
 if __name__ == '__main__':
     cam = CamPylonFreerun(SampleImageEventHandler)
