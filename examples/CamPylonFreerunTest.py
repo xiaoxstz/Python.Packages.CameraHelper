@@ -6,6 +6,9 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
         image = PylonImageConvert.convert(grabResult)
         print("OnImageGrabbed")
+    
+    def test(self):
+        pass
 
 if __name__ == '__main__':
     cam = CamPylonFreerun(SampleImageEventHandler)
