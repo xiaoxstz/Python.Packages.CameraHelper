@@ -36,6 +36,7 @@ class CamPylonFreerun:
 
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
+        """this function should not put the code that costs too much time"""
         print("OnImageGrabbed")
 
 if __name__ == '__main__':

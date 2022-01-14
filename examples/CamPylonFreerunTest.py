@@ -4,6 +4,7 @@ from pypylon import pylon
 
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
+        """this function should not put the code that costs too much time"""
         image = PylonImageConvert.convert(grabResult)
         print("OnImageGrabbed")
     
