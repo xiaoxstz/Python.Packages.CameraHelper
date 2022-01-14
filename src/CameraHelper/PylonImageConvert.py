@@ -1,11 +1,12 @@
 from pypylon import pylon # pip install pypylon
 
-Converter = pylon.ImageFormatConverter()
+class PylonImageConvert:
+    Converter = pylon.ImageFormatConverter()
 
-# converting to opencv bgr format
-Converter.OutputPixelFormat = pylon.PixelType_BGR8packed
-Converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
+    # converting to opencv bgr format
+    Converter.OutputPixelFormat = pylon.PixelType_BGR8packed
+    Converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
 
-def convert(grabResult):
-    image = Converter.Convert(grabResult)
-    return image
+    def convert(grabResult):
+        image = PylonImageConvert.Converter.Convert(grabResult)
+        return image

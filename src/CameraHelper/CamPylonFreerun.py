@@ -31,10 +31,8 @@ class CamPylonFreerun:
         self.Close()
 
 
-import PylonImageConvert
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
-        image = PylonImageConvert.convert(grabResult)
         print("OnImageGrabbed")
 
 if __name__ == '__main__':
@@ -42,4 +40,3 @@ if __name__ == '__main__':
     import time
     time.sleep(1)
     cam.Close()
-
