@@ -9,10 +9,12 @@ import PIL.Image, PIL.ImageTk
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
         """this function should not put the code that costs too much time"""
+        global frame_counter
         # print("OnImageGrabbed start")
         global image
         img = PylonImageConvert.convert(grabResult)
         image = img.GetArray()
+        frame_counter +=1
         # canvas.itemconfig(canvas_img, image=image) # could not put here
         # print("OnImageGrabbed end")
         pass
@@ -54,6 +56,7 @@ def __move(event):
     canvas.coords(canvas_spot,100,100,110,110)
 
 if __name__ == '__main__':
+    frame_counter = 0
     cam = CamPylonFreerun(SampleImageEventHandler)
     size_ratio = 0.2
     canvas_width = int(cam.width * size_ratio) 
