@@ -1,3 +1,4 @@
+from cgitb import text
 from turtle import update
 from CameraHelper import PylonImageConvert
 from CameraHelper import CamPylonFreerun
@@ -33,6 +34,10 @@ def update():
                 PIL.Image.ANTIALIAS)
         __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
         canvas.itemconfig(canvas_img, image=__imgShown) # could not put here  
+
+        global canvas_frame_counter
+        canvas_frame_counter +=1
+        canvas.itemconfig(canvas_frame_counter_text,text=f"{canvas_frame_counter}")
         image = None
     else:
         pass
@@ -65,7 +70,7 @@ if __name__ == '__main__':
     tkWindow = tkinter.Tk()
     canvas = tkinter.Canvas(tkWindow, width = canvas_width, height = canvas_height,bg='gray')
     canvas.pack(fill=tkinter.BOTH,expand=tkinter.YES)
-
+    
     image = np.zeros([cam.height,cam.width,3],dtype=np.uint8)    
     __PIL_Img = PIL.Image.fromarray(image).resize(
             (canvas.winfo_width(), canvas.winfo_height()),
@@ -79,6 +84,9 @@ if __name__ == '__main__':
     canvas.bind_all("<Control-Key-2>", __unselect,add=True)
     canvas.bind_all("<Control-Key-3>", __move,add=True)
 
+    canvas.create_text(10,10,text="frame counter:",fill="red")
+    canvas_frame_counter = 0
+    canvas_frame_counter_text = canvas.create_text(20,20,text="0",fill="red")
     update()
     tkWindow.mainloop()
 
