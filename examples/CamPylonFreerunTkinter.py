@@ -36,6 +36,23 @@ def update():
         pass
     tkWindow.after(10,update)
 
+def __add_circle(event):
+    global canvas_spot
+    canvas_spot = canvas.create_oval(400,400,410,410,fill="blue")
+
+def __select(event):
+    # self.canvas.find_closest()
+    # self.canvas.find_withtag()
+    # self.canvas.find_overlapping() 
+    # reference:Python Tkinter Canvas中的tag的使用, https://blog.csdn.net/weixin_41984221/article/details/110918899
+    canvas.itemconfig(canvas_spot,fill="red")
+
+def __unselect(event):
+    canvas.itemconfig(canvas_spot,fill="blue")
+
+def __move(event):
+    canvas.coords(canvas_spot,100,100,110,110)
+
 if __name__ == '__main__':
     cam = CamPylonFreerun(SampleImageEventHandler)
     size_ratio = 0.2
@@ -52,6 +69,12 @@ if __name__ == '__main__':
             PIL.Image.ANTIALIAS)
     __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
     canvas_img = canvas.create_image(0, 0, image = __imgShown, anchor = tkinter.NW)
+    canvas_spot = None
+
+    canvas.bind_all("<Control-Key-0>", __add_circle,add=True)
+    canvas.bind_all("<Control-Key-1>", __select,add=True)
+    canvas.bind_all("<Control-Key-2>", __unselect,add=True)
+    canvas.bind_all("<Control-Key-3>", __move,add=True)
 
     update()
     tkWindow.mainloop()
