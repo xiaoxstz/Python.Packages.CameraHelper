@@ -21,8 +21,7 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
         pass
 
 def update():
-    global __PIL_Img
-    global __imgShown
+    global __imgShown # this line is a must
     __PIL_Img = PIL.Image.fromarray(image)
     __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
     canvas.itemconfig(canvas_img, image=__imgShown) # could not put here
