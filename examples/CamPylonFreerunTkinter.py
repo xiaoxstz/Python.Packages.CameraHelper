@@ -13,8 +13,8 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
         global frame_counter
         # print("OnImageGrabbed start")
         global image
-        img = PylonImageConvert.convert(grabResult)
-        image = img.GetArray()
+        # image = PylonImageConvert.convert(grabResult).GetArray() # convert, not necessary if the image format is set well
+        image = grabResult.GetArray()
         frame_counter +=1
         # canvas.itemconfig(canvas_img, image=image) # could not put here
         # print("OnImageGrabbed end")
