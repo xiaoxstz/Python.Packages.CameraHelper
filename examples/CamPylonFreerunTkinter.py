@@ -22,25 +22,27 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
 
 def update():
     global __imgShown # this line is a must
-    __PIL_Img = PIL.Image.fromarray(image)
+    __PIL_Img = PIL.Image.fromarray(image).resize(
+            (canvas.winfo_width(), canvas.winfo_height()),
+            PIL.Image.ANTIALIAS)
     __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
     canvas.itemconfig(canvas_img, image=__imgShown) # could not put here
     tkWindow.after(10,update)
 
 if __name__ == '__main__':
     cam = CamPylonFreerun(SampleImageEventHandler)
-    size_ratio = 0.3
+    size_ratio = 0.2
     canvas_width = int(cam.width * size_ratio) 
     canvas_height = int(cam.height * size_ratio)
-    # canvas_width = 600
-    # canvas_height = 600
     
     tkWindow = tkinter.Tk()
     canvas = tkinter.Canvas(tkWindow, width = canvas_width, height = canvas_height,bg='gray')
     canvas.pack(fill=tkinter.BOTH,expand=tkinter.YES)
 
     image = np.zeros([cam.height,cam.width,3],dtype=np.uint8)    
-    __PIL_Img = PIL.Image.fromarray(image)
+    __PIL_Img = PIL.Image.fromarray(image).resize(
+            (canvas.winfo_width(), canvas.winfo_height()),
+            PIL.Image.ANTIALIAS)
     __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
     canvas_img = canvas.create_image(0, 0, image = __imgShown, anchor = tkinter.NW)
 
