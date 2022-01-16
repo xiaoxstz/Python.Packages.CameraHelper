@@ -29,10 +29,11 @@ def update():
         img_temp = image.copy()
         image = None
         global __imgShown # this line is a must
-        __PIL_Img = PIL.Image.fromarray(img_temp).resize(
-                (canvas.winfo_width(), canvas.winfo_height()),
+        __PIL_Img = PIL.Image.fromarray(img_temp) # too slow
+        __resize_Img = __PIL_Img.resize(
+                (canvas_width, canvas_height),
                 PIL.Image.ANTIALIAS)
-        __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
+        __imgShown = PIL.ImageTk.PhotoImage(image = __resize_Img)
         canvas.itemconfig(canvas_img, image=__imgShown) # could not put here  
 
         global canvas_frame_counter
@@ -41,11 +42,15 @@ def update():
         image = None
     else:
         pass
-    tkWindow.after(10,update)
+    tkWindow.after(5,update)
 
 def __add_circle(event):
     global canvas_spot
     canvas_spot = canvas.create_oval(400,400,410,410,fill="blue")
+
+def __LButton_DbClick__callback(event):
+    global canvas_spot
+    canvas_spot = canvas.create_oval(event.x,event.y,event.x+10,event.y+10,fill="blue")
 
 def __select(event):
     # self.canvas.find_closest()
@@ -76,7 +81,10 @@ if __name__ == '__main__':
     __PIL_Img = PIL.Image.fromarray(image).resize(
             (canvas.winfo_width(), canvas.winfo_height()),
             PIL.Image.ANTIALIAS)
-    __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
+    __resize_Img = __PIL_Img.resize(
+                (canvas_width, canvas_height),
+                PIL.Image.ANTIALIAS)
+    __imgShown = PIL.ImageTk.PhotoImage(image = __resize_Img)
     canvas_img = canvas.create_image(0, 0, image = __imgShown, anchor = tkinter.NW)
     canvas_spot = None
 
@@ -84,6 +92,7 @@ if __name__ == '__main__':
     canvas.bind_all("<Control-Key-1>", __select,add=True)
     canvas.bind_all("<Control-Key-2>", __unselect,add=True)
     canvas.bind_all("<Control-Key-3>", __move,add=True)
+    canvas.bind("<Double-Button-1>", __LButton_DbClick__callback,add=True)
 
     canvas.create_text(10,10,text="canvas frame counter:",fill="red")
     canvas_frame_counter = 0
