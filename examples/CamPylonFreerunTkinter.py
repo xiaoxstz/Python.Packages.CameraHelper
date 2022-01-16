@@ -21,12 +21,19 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
         pass
 
 def update():
-    global __imgShown # this line is a must
-    __PIL_Img = PIL.Image.fromarray(image).resize(
-            (canvas.winfo_width(), canvas.winfo_height()),
-            PIL.Image.ANTIALIAS)
-    __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
-    canvas.itemconfig(canvas_img, image=__imgShown) # could not put here
+    global image
+    if image is not None:
+        img_temp = image.copy()
+        image = None
+        global __imgShown # this line is a must
+        __PIL_Img = PIL.Image.fromarray(img_temp).resize(
+                (canvas.winfo_width(), canvas.winfo_height()),
+                PIL.Image.ANTIALIAS)
+        __imgShown = PIL.ImageTk.PhotoImage(image = __PIL_Img)
+        canvas.itemconfig(canvas_img, image=__imgShown) # could not put here  
+        image = None
+    else:
+        pass
     tkWindow.after(10,update)
 
 if __name__ == '__main__':
