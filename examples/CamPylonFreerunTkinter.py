@@ -29,15 +29,26 @@ def update():
         img_temp = image.copy()
         image = None
         global tk_photo # this line is a must
-        img_resize = cv2.resize(img_temp, dsize=(canvas_width, canvas_height), interpolation=cv2.INTER_NEAREST)
-        tk_photo_Data = f'P5 {canvas_width} {canvas_height} 255 '.encode() + img_resize.tobytes()
+
+        # ---- transfer numpy array to tkinter photo data
+        # tk_photo_Data = f'P5 {canvas_width} {canvas_height} 255 '.encode() + image.astype(np.uint8).tobytes() 
+
+        # ---- resize
+        # interplation = cv2.INTER_CUBIC # scale up use this line
+        interplation = cv2.INTER_AREA    # scale down use this line
+        img_resize = cv2.resize(img_temp, dsize=(canvas_width, canvas_height), interpolation=interplation)
+
+        # --- transfer numpy array to tkinter photo data
+        ppm_header = f'P6 {canvas_width} {canvas_height} 255 '.encode()
+        tk_photo_Data = ppm_header + cv2.cvtColor(img_resize, cv2.COLOR_BGR2RGB).tobytes()
+
+        # --- update image
         tk_photo =  tkinter.PhotoImage(width=canvas_width, height=canvas_height, data=tk_photo_Data, format='PPM')
         canvas.itemconfig(canvas_img, image=tk_photo) # could not put here  
 
         global canvas_frame_counter
         canvas_frame_counter +=1
         canvas.itemconfig(canvas_frame_counter_text,text=f"{canvas_frame_counter}")
-        image = None
     else:
         pass
     tkWindow.after(5,update)
