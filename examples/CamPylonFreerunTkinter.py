@@ -68,6 +68,7 @@ if __name__ == '__main__':
     canvas_height = int(cam.height * size_ratio)
     
     tkWindow = tkinter.Tk()
+    tkWindow.geometry('+100+50')
     canvas = tkinter.Canvas(tkWindow, width = canvas_width, height = canvas_height,bg='gray')
     canvas.pack(fill=tkinter.BOTH,expand=tkinter.YES)
     
