@@ -84,7 +84,7 @@ if __name__ == '__main__':
     canvas.bind_all("<Control-Key-2>", __unselect,add=True)
     canvas.bind_all("<Control-Key-3>", __move,add=True)
 
-    canvas.create_text(10,10,text="frame counter:",fill="red")
+    canvas.create_text(10,10,text="canvas frame counter:",fill="red")
     canvas_frame_counter = 0
     canvas_frame_counter_text = canvas.create_text(20,20,text="0",fill="red")
     update()
