@@ -5,7 +5,7 @@ from CameraHelper import CamPylonFreerun
 from pypylon import pylon
 import numpy as np
 import tkinter
-import PIL.Image, PIL.ImageTk
+import cv2
 
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
@@ -28,13 +28,11 @@ def update():
     if image is not None:
         img_temp = image.copy()
         image = None
-        global __imgShown # this line is a must
-        __PIL_Img = PIL.Image.fromarray(img_temp) # too slow
-        __resize_Img = __PIL_Img.resize(
-                (canvas_width, canvas_height),
-                PIL.Image.ANTIALIAS)
-        __imgShown = PIL.ImageTk.PhotoImage(image = __resize_Img)
-        canvas.itemconfig(canvas_img, image=__imgShown) # could not put here  
+        global tk_photo # this line is a must
+        img_resize = cv2.resize(img_temp, dsize=(canvas_width, canvas_height), interpolation=cv2.INTER_NEAREST)
+        tk_photo_Data = f'P5 {canvas_width} {canvas_height} 255 '.encode() + img_resize.tobytes()
+        tk_photo =  tkinter.PhotoImage(width=canvas_width, height=canvas_height, data=tk_photo_Data, format='PPM')
+        canvas.itemconfig(canvas_img, image=tk_photo) # could not put here  
 
         global canvas_frame_counter
         canvas_frame_counter +=1
@@ -78,14 +76,10 @@ if __name__ == '__main__':
     canvas.pack(fill=tkinter.BOTH,expand=tkinter.YES)
     
     image = np.zeros([cam.height,cam.width,3],dtype=np.uint8)    
-    __PIL_Img = PIL.Image.fromarray(image).resize(
-            (canvas.winfo_width(), canvas.winfo_height()),
-            PIL.Image.ANTIALIAS)
-    __resize_Img = __PIL_Img.resize(
-                (canvas_width, canvas_height),
-                PIL.Image.ANTIALIAS)
-    __imgShown = PIL.ImageTk.PhotoImage(image = __resize_Img)
-    canvas_img = canvas.create_image(0, 0, image = __imgShown, anchor = tkinter.NW)
+    img_resize = cv2.resize(image, dsize=(canvas_width, canvas_height), interpolation=cv2.INTER_NEAREST)
+    tk_photo_Data = f'P5 {canvas_width} {canvas_height} 255 '.encode() + img_resize.tobytes()
+    tk_photo =  tkinter.PhotoImage(width=canvas_width, height=canvas_height, data=tk_photo_Data, format='PPM')
+    canvas_img = canvas.create_image(0, 0, image = tk_photo, anchor = tkinter.NW)
     canvas_spot = None
 
     canvas.bind_all("<Control-Key-0>", __add_circle,add=True)
