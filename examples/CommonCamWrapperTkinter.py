@@ -16,7 +16,7 @@ def update():
         img_resize = cv2.resize(img_temp, dsize=(canvas_width, canvas_height), interpolation=interplation) 
         tk_photo_Data = ppm_header + cv2.cvtColor(img_resize, cv2.COLOR_BGR2RGB).tobytes()
         tk_photo =  tkinter.PhotoImage(width=canvas_width, height=canvas_height, data=tk_photo_Data, format='PPM')
-        canvas_img = canvas.create_image(0, 0, image = tk_photo, anchor = tkinter.NW)
+        canvas.itemconfig(canvas_img, image=tk_photo)
     tkWindow.after(10,update)
 
 if __name__ == '__main__':
