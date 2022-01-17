@@ -31,10 +31,10 @@ class CamPylonWrapper:
         while self.camera.IsGrabbing():
             self.__grab(grabbed_callback)
     
-    def __grab(self, grabed_callback,timeout:int=5000):
+    def __grab(self, grabbed_callback,timeout:int=5000):
         grabResult = self.camera.RetrieveResult(timeout, pylon.TimeoutHandling_ThrowException)
         if grabResult.GrabSucceeded():
-            grabed_callback(grabResult)
+            grabbed_callback(grabResult)
             grabResult.Release()
         else:
             grabResult.Release()
@@ -55,9 +55,9 @@ class CamPylonWrapper:
             print(e)
             return (False, None)
     
-    def __Close(self):
+    def Close(self):
         # Releasing the resource    
         self.camera.StopGrabbing()
     
     def __del__(self):
-        self.__Close()
+        self.Close()
