@@ -6,10 +6,10 @@ class CamPylonFreerun:
     def __init__(self) -> None:
         try:
             # Create an instant camera object for the camera device found first.
-            self.camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
-            self.camera.Open()
-            self.width = self.camera.Width.GetValue() 
-            self.height = self.camera.Height.GetValue()
+            self.__camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
+            self.__camera.Open()
+            self.width = self.__camera.Width.GetValue() 
+            self.height = self.__camera.Height.GetValue()
             
         except genicam.GenericException as e:
             # Error handling.
@@ -17,18 +17,18 @@ class CamPylonFreerun:
     
     def start_grab_thread(self,imageEvent:pylon.ImageEventHandler):
         # For demonstration purposes only, register another image event handler.
-        self.camera.RegisterImageEventHandler(imageEvent(), pylon.RegistrationMode_Append, pylon.Cleanup_Delete)
+        self.__camera.RegisterImageEventHandler(imageEvent(), pylon.RegistrationMode_Append, pylon.Cleanup_Delete)
 
         # Start the grabbing using the grab loop thread, by setting the grabLoopType parameter
         # to GrabLoop_ProvidedByInstantCamera. The grab results are delivered to the image event handlers.
         # The GrabStrategy_OneByOne default grab strategy is used.
-        self.camera.StartGrabbing(pylon.GrabStrategy_OneByOne, pylon.GrabLoop_ProvidedByInstantCamera)
+        self.__camera.StartGrabbing(pylon.GrabStrategy_OneByOne, pylon.GrabLoop_ProvidedByInstantCamera)
         pass
 
     def Close(self):
-        if self.camera.IsGrabbing():
+        if self.__camera.IsGrabbing():
             # Releasing the resource    
-            self.camera.StopGrabbing()
+            self.__camera.StopGrabbing()
 
     def __del__(self):
         """called when use `del` command"""

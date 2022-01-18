@@ -5,17 +5,17 @@ from .PylonImageConvert import PylonImageConvert
 class CamPylonWrapper:
     def __init__(self) -> None:
         # connecting to the first available camera
-        self.camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
+        self.__camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
         self.__bExit = False
 
-        self.camera.Open()
+        self.__camera.Open()
         
         # Grabing continuously (video) with minimal delay
-        self.camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+        self.__camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
         # get image size
-        # self.width = self.camera.Width.GetValue()    # not right value
-        # self.height = self.camera.Height.GetValue()
+        # self.width = self.__camera.Width.GetValue()    # not right value
+        # self.height = self.__camera.Height.GetValue()
         ret,img = self.get_frame()
         if ret:
             self.height = img.shape[0]
@@ -29,11 +29,11 @@ class CamPylonWrapper:
         self.grab_thread.start()
     
     def __grab_loop(self, thread_name:str,grabbed_callback):
-        while self.camera.IsGrabbing() and not self.__bExit:
+        while self.__camera.IsGrabbing() and not self.__bExit:
             self.__grab(grabbed_callback)
     
     def __grab(self, grabbed_callback,timeout:int=5000):
-        grabResult = self.camera.RetrieveResult(timeout, pylon.TimeoutHandling_ThrowException)
+        grabResult = self.__camera.RetrieveResult(timeout, pylon.TimeoutHandling_ThrowException)
         if grabResult.GrabSucceeded():
             grabbed_callback(grabResult)
             grabResult.Release()
@@ -42,7 +42,7 @@ class CamPylonWrapper:
             return None
     
     def get_frame(self,timeout:int=5000):
-        grabResult = self.camera.RetrieveResult(timeout, pylon.TimeoutHandling_ThrowException)
+        grabResult = self.__camera.RetrieveResult(timeout, pylon.TimeoutHandling_ThrowException)
         try:
             if grabResult.GrabSucceeded():
                 img = PylonImageConvert.convert(grabResult)
@@ -59,7 +59,7 @@ class CamPylonWrapper:
     def Close(self):
         self.__bExit = True
         # Releasing the resource (not needed)
-        # self.camera.StopGrabbing()
+        # self.__camera.StopGrabbing()
     
     def __del__(self):
         self.Close()
