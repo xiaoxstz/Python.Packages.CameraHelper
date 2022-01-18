@@ -1,9 +1,10 @@
 """
-This program has been tested on:
+This program has been tested with:
 * the camera "HIKVISION E14a" with the module "CommonWrapper"
 * Basler camera with the module "PylonFreerun"
+* Basler camera with the module "PylonWrapper"
 """
-from CameraHelper import CameraChooser # version >= 0.0.7
+from CameraHelper import CameraChooser # version tested: 0.0.7~0.0.9
 from CameraHelper import CameraType
 import tkinter
 import cv2
@@ -13,6 +14,22 @@ from pypylon import pylon
 def grabbed_callback(frame):
     global image
     image = frame
+
+def pylon_grabbed_callback(grabResult):
+    """this function should not put the code that costs too much time"""
+
+    global frame_counter
+    # print("OnImageGrabbed start")
+    global image
+    if grabResult.GrabSucceeded():
+        # image = PylonImageConvert.convert(grabResult).GetArray() # convert, not necessary if the image format is set well
+        image = grabResult.GetArray()
+        frame_counter += 1
+    else:
+        pass
+    # canvas.itemconfig(canvas_img, image=image) # could not put here
+    # print("OnImageGrabbed end")
+    pass
 
 def update():
     global image
@@ -32,25 +49,12 @@ def update():
 
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
-        """this function should not put the code that costs too much time"""
-        
-        global frame_counter
-        # print("OnImageGrabbed start")
-        global image
-        if grabResult.GrabSucceeded():
-            # image = PylonImageConvert.convert(grabResult).GetArray() # convert, not necessary if the image format is set well
-            image = grabResult.GetArray()
-            frame_counter +=1
-        else:
-            pass
-        # canvas.itemconfig(canvas_img, image=image) # could not put here
-        # print("OnImageGrabbed end")
-        pass
+        pylon_grabbed_callback(grabResult)
 
 
 if __name__ == '__main__':
     frame_counter = 0
-    camType = CameraType.PylonFreerun
+    camType = CameraType.PylonWrapper
     ret, cam = CameraChooser.Choose(camType)
     size_ratio = 0.5
     canvas_width = int(cam.width * size_ratio)
@@ -79,8 +83,11 @@ if __name__ == '__main__':
     tk_photo =  tkinter.PhotoImage(width=canvas_width, height=canvas_height, data=tk_photo_Data, format='PPM')
     canvas_img = canvas.create_image(0, 0, image = tk_photo, anchor = tkinter.NW)
 
-    if camType == camType.PylonFreerun:
+
+    if camType == CameraType.PylonFreerun:
         cam.start_grab_thread(SampleImageEventHandler)
+    elif camType == CameraType.PylonWrapper:
+        cam.start_grab_thread(pylon_grabbed_callback)
     else:
         cam.start_grab_thread(grabbed_callback)
     update()
