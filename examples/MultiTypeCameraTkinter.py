@@ -11,6 +11,7 @@ import cv2
 import numpy as np
 from pypylon import pylon
 
+#region image grabbed callback
 def grabbed_callback(frame):
     global image
     image = frame
@@ -29,32 +30,36 @@ def pylon_grabbed_callback(grabResult):
         pass
     # canvas.itemconfig(canvas_img, image=image) # could not put here
     # print("OnImageGrabbed end")
-    pass
+
+class SampleImageEventHandler(pylon.ImageEventHandler):
+    def OnImageGrabbed(self, camera, grabResult):
+        pylon_grabbed_callback(grabResult)
+
+#endregion
+
+def get_tk_photo(image:np.ndarray):
+    img_resize = cv2.resize(image, dsize=(canvas_width, canvas_height), interpolation=interplation) 
+    if tranformation is None:
+        tk_photo_Data = ppm_header + img_resize.tobytes()
+    else:
+        tk_photo_Data = ppm_header + cv2.cvtColor(img_resize, tranformation).tobytes()
+    tk_photo =  tkinter.PhotoImage(width=canvas_width, height=canvas_height, data=tk_photo_Data, format='PPM')
+    return tk_photo
 
 def update():
     global image
     if image is not None:
         img_temp = image.copy()
         global canvas_img,tk_photo
-        image = None
-        img_resize = cv2.resize(img_temp, dsize=(canvas_width, canvas_height), interpolation=interplation) 
-        if tranformation is None:
-            tk_photo_Data = ppm_header + img_resize.tobytes()
-        else:
-            tk_photo_Data = ppm_header + cv2.cvtColor(img_resize, tranformation).tobytes()
-        tk_photo =  tkinter.PhotoImage(width=canvas_width, height=canvas_height, data=tk_photo_Data, format='PPM')
+        tk_photo = get_tk_photo(img_temp)
         # canvas_img = canvas.create_image(0, 0, image = tk_photo, anchor = tkinter.NW)
         canvas.itemconfig(canvas_img,image=tk_photo)
     tkWindow.after(10,update)
 
-class SampleImageEventHandler(pylon.ImageEventHandler):
-    def OnImageGrabbed(self, camera, grabResult):
-        pylon_grabbed_callback(grabResult)
-
 
 if __name__ == '__main__':
     frame_counter = 0
-    camType = CameraType.PylonWrapper
+    camType = CameraType.PylonFreerun
     ret, cam = CameraChooser.Choose(camType)
     size_ratio = 0.5
     canvas_width = int(cam.width * size_ratio)
@@ -67,7 +72,6 @@ if __name__ == '__main__':
 
     # interplation = cv2.INTER_CUBIC # scale up use this line
     interplation = cv2.INTER_AREA    # scale down use this line
-    img_resize = cv2.resize(image, dsize=(canvas_width, canvas_height), interpolation=interplation) 
     ppm_header = f'P6 {canvas_width} {canvas_height} 255 '.encode()
 
     tranformation = None
@@ -76,11 +80,7 @@ if __name__ == '__main__':
     else:
         tranformation = None 
 
-    if tranformation is None:
-        tk_photo_Data = ppm_header + img_resize.tobytes()
-    else:
-        tk_photo_Data = ppm_header + cv2.cvtColor(img_resize, tranformation).tobytes()
-    tk_photo =  tkinter.PhotoImage(width=canvas_width, height=canvas_height, data=tk_photo_Data, format='PPM')
+    tk_photo = get_tk_photo(image)
     canvas_img = canvas.create_image(0, 0, image = tk_photo, anchor = tkinter.NW)
 
 
