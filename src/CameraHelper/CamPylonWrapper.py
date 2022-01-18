@@ -6,6 +6,7 @@ class CamPylonWrapper:
     def __init__(self) -> None:
         # connecting to the first available camera
         self.camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
+        self.__bExit = False
 
         self.camera.Open()
         
@@ -28,7 +29,7 @@ class CamPylonWrapper:
         self.grab_thread.start()
     
     def __grab_loop(self, thread_name:str,grabbed_callback):
-        while self.camera.IsGrabbing():
+        while self.camera.IsGrabbing() and not self.__bExit:
             self.__grab(grabbed_callback)
     
     def __grab(self, grabbed_callback,timeout:int=5000):
@@ -56,8 +57,9 @@ class CamPylonWrapper:
             return (False, None)
     
     def Close(self):
-        # Releasing the resource    
-        self.camera.StopGrabbing()
+        self.__bExit = True
+        # Releasing the resource (not needed)
+        # self.camera.StopGrabbing()
     
     def __del__(self):
         self.Close()
