@@ -10,12 +10,16 @@ import cv2
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
         """this function should not put the code that costs too much time"""
+        
         global frame_counter
         # print("OnImageGrabbed start")
         global image
-        # image = PylonImageConvert.convert(grabResult).GetArray() # convert, not necessary if the image format is set well
-        image = grabResult.GetArray()
-        frame_counter +=1
+        if grabResult.GrabSucceeded():
+            # image = PylonImageConvert.convert(grabResult).GetArray() # convert, not necessary if the image format is set well
+            image = grabResult.GetArray()
+            frame_counter +=1
+        else:
+            pass
         # canvas.itemconfig(canvas_img, image=image) # could not put here
         # print("OnImageGrabbed end")
         pass

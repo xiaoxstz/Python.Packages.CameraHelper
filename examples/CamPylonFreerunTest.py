@@ -5,10 +5,14 @@ from pypylon import pylon
 class SampleImageEventHandler(pylon.ImageEventHandler):
     def OnImageGrabbed(self, camera, grabResult):
         """this function should not put the code that costs too much time"""
-        image = PylonImageConvert.convert(grabResult)
-        global frame_counter
-        frame_counter += 1
-        print(f"OnImageGrabbed, frame:{frame_counter}")
+        if grabResult.GrabSucceeded():
+            image = PylonImageConvert.convert(grabResult).GetArray()
+            grabResult.Release()
+            global frame_counter
+            frame_counter += 1
+            print(f"OnImageGrabbed, frame:{frame_counter}")
+        else:
+            pass
     
     def test(self):
         pass

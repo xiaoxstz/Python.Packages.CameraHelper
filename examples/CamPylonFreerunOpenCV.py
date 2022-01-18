@@ -9,8 +9,11 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
         """this function should not put the code that costs too much time"""
         # print("OnImageGrabbed start")
         global image
-        img = PylonImageConvert.convert(grabResult)
-        image = img.GetArray()
+        if grabResult.GrabSucceeded():
+            img = PylonImageConvert.convert(grabResult)
+            image = img.GetArray()
+        else:
+            pass
         # print("OnImageGrabbed end")
     
     def test(self):
