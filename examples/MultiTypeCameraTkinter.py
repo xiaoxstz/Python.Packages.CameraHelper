@@ -5,7 +5,6 @@ This program has been tested on:
 """
 from CameraHelper import CameraChooser # version >= 0.0.7
 from CameraHelper import CameraType
-from TKCanvasPainter import SpotPainter
 import tkinter
 import cv2
 import numpy as np
@@ -59,9 +58,6 @@ if __name__ == '__main__':
     tkWindow = tkinter.Tk()
     canvas = tkinter.Canvas(tkWindow,width = canvas_width, height = canvas_height,bg='gray')
     canvas.pack()
-
-    spot_painter = SpotPainter(10,"red","blue")
-    spot_painter.bind2Canvas(canvas)
 
     image = np.zeros([cam.height,cam.width,3],dtype=np.uint8)   
 
