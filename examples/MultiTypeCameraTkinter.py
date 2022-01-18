@@ -70,9 +70,12 @@ if __name__ == '__main__':
 
     image = np.zeros([cam.height,cam.width,3],dtype=np.uint8)   
 
-    # interplation = cv2.INTER_CUBIC # scale up use this line
-    interplation = cv2.INTER_AREA    # scale down use this line
     ppm_header = f'P6 {canvas_width} {canvas_height} 255 '.encode()
+
+    if size_ratio > 1:
+        interplation = cv2.INTER_CUBIC   # best for zoom in
+    else:
+        interplation = cv2.INTER_AREA    # best for zoom out
 
     tranformation = None
     if camType == CameraType.PylonFreerun or camType == CameraType.PylonWrapper:
