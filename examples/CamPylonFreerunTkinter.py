@@ -72,7 +72,8 @@ def __move(event):
 
 if __name__ == '__main__':
     frame_counter = 0
-    cam = CamPylonFreerun(SampleImageEventHandler)
+    cam = CamPylonFreerun()
+    cam.start_grab_thread(SampleImageEventHandler)
     size_ratio = 0.2
     canvas_width = int(cam.width * size_ratio) 
     canvas_height = int(cam.height * size_ratio)

@@ -12,7 +12,8 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
         pass
 
 if __name__ == '__main__':
-    cam = CamPylonFreerun(SampleImageEventHandler)
+    cam = CamPylonFreerun()
+    cam.start_grab_thread(SampleImageEventHandler)
     import time
     time.sleep(1)
     cam.Close()
