@@ -1,3 +1,4 @@
+# cython: language_level=3
 from pypylon import pylon # pip install pypylon
 
 class PylonImageConvert:

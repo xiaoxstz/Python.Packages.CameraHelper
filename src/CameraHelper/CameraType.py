@@ -1,3 +1,4 @@
+# cython: language_level=3
 from enum import IntEnum
 
 from CameraHelper import CamPylonFreerun

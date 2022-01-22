@@ -1,3 +1,4 @@
+# cython: language_level=3
 from .CamPylonWrapper import CamPylonWrapper
 from .CamCommonWrapper import CamCommonWrapper
 from .CameraType import CameraType

@@ -1,0 +1,5 @@
+global-exclude *.py
+global-exclude *.py[co]
+global-exclude *.c
+global-include __init__.py
+global-include *.pyd

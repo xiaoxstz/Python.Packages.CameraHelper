@@ -1,4 +1,11 @@
 __pycache__/
+.idea/
+
+# for build
 dist/
 *.egg-info/
-.idea/
+
+# for Cython
+build/
+*.c
+*.pyd

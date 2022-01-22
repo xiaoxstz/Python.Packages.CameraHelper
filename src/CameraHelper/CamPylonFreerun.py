@@ -1,3 +1,4 @@
+# cython: language_level=3
 """this class can reach the max frame rate"""
 from pypylon import pylon # pip install pypylon
 from pypylon import genicam
