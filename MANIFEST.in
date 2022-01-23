@@ -3,3 +3,5 @@ global-exclude *.py[co]
 global-exclude *.c
 global-include __init__.py
 global-include *.pyd
+global-include CameraHelper CameraType.py
+global-include CameraHelper CameraChooser.py
