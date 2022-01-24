@@ -22,15 +22,18 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
 if __name__ == '__main__':
     win_name = "camera"
     cam = CamPylonFreerun()
-    cam.start_grab_thread(SampleImageEventHandler)
-    image= np.zeros([cam.height,cam.height,3],dtype=np.uint8)    
-    while True:
-        cv2.imshow(win_name, image)
-        cv2.resizeWindow(win_name,960,960)
-        key = cv2.waitKey(1)
-        if key == 27:
-            break
-    cv2.destroyAllWindows()
+    if cam.IsConnected():
+        cam.start_grab_thread(SampleImageEventHandler)
+        image = np.zeros([cam.height,cam.width,3],dtype=np.uint8)
+        while True:
+            cv2.imshow(win_name, image)
+            cv2.resizeWindow(win_name,960,960)
+            key = cv2.waitKey(1)
+            if key == 27:
+                break
+        cv2.destroyAllWindows()
+    else:
+        print("failed to connect the camera")
 
 
 

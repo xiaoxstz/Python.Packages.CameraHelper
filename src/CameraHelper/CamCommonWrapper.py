@@ -3,14 +3,15 @@ import cv2
 import threading
 class CamCommonWrapper:
     def __init__(self, video_source=0):
+        self.__Connected = False
         # Open the video source
         self.__camera = cv2.VideoCapture(video_source,cv2.CAP_DSHOW)
-        if not self.__camera.isOpened():
-            raise ValueError("Unable to open video source", video_source)
+        if self.__camera.isOpened():
+            # Get video source width and height
+            self.width = int(self.__camera.get(cv2.CAP_PROP_FRAME_WIDTH))
+            self.height = int(self.__camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-        # Get video source width and height
-        self.width = int(self.__camera.get(cv2.CAP_PROP_FRAME_WIDTH))
-        self.height = int(self.__camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            self.__Connected = True
 
     def start_grab_thread(self, grabbed_callback):
         self.grab_thread = threading.Thread(target=self.__grab_loop,
@@ -46,10 +47,16 @@ class CamCommonWrapper:
     # Release the video source when the object is destroyed
     def __del__(self):
         self.Close()
+    
+    def IsConnected(self):
+        return self.__Connected
 
 def grabbed_callback(frame):
     print("--grabbed_callback")
 
 if __name__ == '__main__':
     cam = CamCommonWrapper()
-    cam.start_grab_thread(grabbed_callback)
+    if cam.IsConnected():
+        cam.start_grab_thread(grabbed_callback)
+    else:
+        print("failed to open the camera")

@@ -5,6 +5,8 @@ from .PylonImageConvert import PylonImageConvert
 
 class CamPylonWrapper:
     def __init__(self) -> None:
+        self.__Connected = False
+
         # connecting to the first available camera
         self.__camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
         self.__bExit = False
@@ -64,3 +66,16 @@ class CamPylonWrapper:
     
     def __del__(self):
         self.Close()
+    
+    def IsConnected(self):
+        return self.__Connected
+
+def grabbed_callback(frame):
+    print("--grabbed_callback")
+
+if __name__ == '__main__':
+    cam = CamPylonWrapper()
+    if cam.IsConnected():
+        cam.start_grab_thread(grabbed_callback)
+    else:
+        print("failed to open the camera")

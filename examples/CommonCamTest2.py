@@ -5,4 +5,7 @@ def grabbed_callback(frame):
 
 if __name__ == '__main__':
     cam = CamCommonWrapper()
-    cam.start_grab_thread(grabbed_callback)
+    if cam.IsConnected():
+        cam.start_grab_thread(grabbed_callback)
+    else:
+        print("failed to connect the camera")

@@ -62,13 +62,17 @@ if __name__ == '__main__':
     camType = CameraType.PylonFreerun
     ret, cam = CameraChooser.Choose(camType)
     size_ratio = 0.5
-    canvas_width = int(cam.width * size_ratio)
-    canvas_height = int(cam.height * size_ratio)
+    if cam.IsConnected():
+        canvas_width = int(cam.width * size_ratio)
+        canvas_height = int(cam.height * size_ratio)
+    else:
+        canvas_width = 960
+        canvas_height = 960
     tkWindow = tkinter.Tk()
     canvas = tkinter.Canvas(tkWindow,width = canvas_width, height = canvas_height,bg='gray')
     canvas.pack()
 
-    image = np.zeros([cam.height,cam.width,3],dtype=np.uint8)   
+    image = np.zeros([canvas_height,canvas_width,3],dtype=np.uint8)
 
     ppm_header = f'P6 {canvas_width} {canvas_height} 255 '.encode()
 
@@ -86,14 +90,14 @@ if __name__ == '__main__':
     tk_photo = get_tk_photo(image)
     canvas_img = canvas.create_image(0, 0, image = tk_photo, anchor = tkinter.NW)
 
-
-    if camType == CameraType.PylonFreerun:
-        cam.start_grab_thread(SampleImageEventHandler)
-    elif camType == CameraType.PylonWrapper:
-        cam.start_grab_thread(pylon_grabbed_callback)
-    else:
-        cam.start_grab_thread(grabbed_callback)
-    update()
+    if cam.IsConnected():
+        if camType == CameraType.PylonFreerun:
+            cam.start_grab_thread(SampleImageEventHandler)
+        elif camType == CameraType.PylonWrapper:
+            cam.start_grab_thread(pylon_grabbed_callback)
+        else:
+            cam.start_grab_thread(grabbed_callback)
+        update()
     tkWindow.mainloop()
 
     cam.Close()

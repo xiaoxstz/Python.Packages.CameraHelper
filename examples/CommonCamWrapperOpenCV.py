@@ -9,7 +9,7 @@ import numpy as np
 if __name__ == '__main__':
     win_name = "camera"
     cam = CamCommonWrapper()
-    image= np.zeros([cam.height,cam.height,3],dtype=np.uint8) 
+    image = np.zeros([cam.height,cam.width,3], dtype=np.uint8)
     tranformation = cv2.COLOR_BGR2RGB   
     while True:
         ret, image = cam.get_frame()
