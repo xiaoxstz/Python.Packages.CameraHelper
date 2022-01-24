@@ -20,9 +20,12 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
 if __name__ == '__main__':
     frame_counter = 0
     cam = CamPylonFreerun()
-    cam.start_grab_thread(SampleImageEventHandler)
-    import time
-    bExit = False
-    while not bExit:
-        time.sleep(1)
-    cam.Close()
+    if cam.IsConnected():
+        cam.start_grab_thread(SampleImageEventHandler)
+        import time
+        bExit = False
+        while not bExit:
+            time.sleep(1)
+        cam.Close()
+    else:
+        print("failed to open the camera")

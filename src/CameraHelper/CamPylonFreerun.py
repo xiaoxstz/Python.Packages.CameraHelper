@@ -5,16 +5,20 @@ from pypylon import genicam
 
 class CamPylonFreerun:
     def __init__(self) -> None:
+        self.__Connected = False
         try:
             # Create an instant camera object for the camera device found first.
             self.__camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
             self.__camera.Open()
             self.width = self.__camera.Width.GetValue() 
             self.height = self.__camera.Height.GetValue()
+            self.__Connected = True
             
         except genicam.GenericException as e:
             # Error handling.
-            print("An exception occurred.", e.GetDescription())
+            print("An exception occurred.", e.args[0])
+            self.__Connected = False
+
     
     def start_grab_thread(self,imageEvent:pylon.ImageEventHandler):
         # For demonstration purposes only, register another image event handler.
@@ -27,14 +31,19 @@ class CamPylonFreerun:
         pass
 
     def Close(self):
-        if self.__camera.IsGrabbing():
-            # Releasing the resource    
-            self.__camera.StopGrabbing()
+        if self.IsConnected():
+            if self.__camera.IsGrabbing():
+                # Releasing the resource    
+                self.__camera.StopGrabbing()
+                self.__Connected = False
 
     def __del__(self):
         """called when use `del` command"""
-        print("__del__")
+        print("camera: __del__")
         self.Close()
+    
+    def IsConnected(self):
+        return self.__Connected
 
 
 class SampleImageEventHandler(pylon.ImageEventHandler):
@@ -44,8 +53,11 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
 
 if __name__ == '__main__':
     cam = CamPylonFreerun()
-    cam.start_grab_thread(SampleImageEventHandler)
-    print(f"image size: ({cam.height},{cam.width})")
-    import time
-    time.sleep(1)
-    cam.Close()
+    if cam.IsConnected():
+        cam.start_grab_thread(SampleImageEventHandler)
+        print(f"image size: ({cam.height},{cam.width})")
+        import time
+        time.sleep(1)
+        cam.Close()
+    else:
+        print("failed to open the camera")

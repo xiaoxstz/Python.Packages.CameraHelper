@@ -6,17 +6,27 @@ from .CamPylonFreerun import CamPylonFreerun
 
 class CameraChooser:
     def Choose(cameraType:CameraType):
-        bSucceed = True
+        bSucceed = False
         camera = None
-        if cameraType == CameraType.CommonWrapper:
-            camera = CamCommonWrapper()
-            bSucceed = True
-        elif cameraType == CameraType.PylonWrapper:
-            camera = CamPylonWrapper()
-            bSucceed = True
-        elif cameraType == CameraType.PylonFreerun:
-            camera = CamPylonFreerun()
-            bSucceed = True
-        else: 
+        try:
+            if cameraType == CameraType.CommonWrapper:
+                camera = CamCommonWrapper()
+                bSucceed = True
+            elif cameraType == CameraType.PylonWrapper:
+                camera = CamPylonWrapper()
+                bSucceed = True
+            elif cameraType == CameraType.PylonFreerun:
+                camera = CamPylonFreerun()
+                if camera.IsConnected():
+                    bSucceed = True
+                else:
+                    bSucceed = False
+            else: 
+                bSucceed = False
+        except RuntimeError as ex:
+            print(ex)
+            bSucceed = False
+        except Exception as ex:
+            print(ex)
             bSucceed = False
         return (bSucceed,camera)

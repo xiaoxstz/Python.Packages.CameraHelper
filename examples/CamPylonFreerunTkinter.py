@@ -27,7 +27,7 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
     def test(self):
         pass
 
-def update():
+def update_image():
     global image
     if image is not None:
         img_temp = image.copy()
@@ -77,17 +77,21 @@ def __move(event):
 if __name__ == '__main__':
     frame_counter = 0
     cam = CamPylonFreerun()
-    cam.start_grab_thread(SampleImageEventHandler)
-    size_ratio = 0.2
-    canvas_width = int(cam.width * size_ratio) 
-    canvas_height = int(cam.height * size_ratio)
+    if cam.IsConnected():
+        cam.start_grab_thread(SampleImageEventHandler)
+        size_ratio = 0.2
+        canvas_width = int(cam.width * size_ratio) 
+        canvas_height = int(cam.height * size_ratio)
+    else:
+        canvas_width = 960
+        canvas_height = 960
     
     tkWindow = tkinter.Tk()
     tkWindow.geometry('+100+50')
     canvas = tkinter.Canvas(tkWindow, width = canvas_width, height = canvas_height,bg='gray')
     canvas.pack(fill=tkinter.BOTH,expand=tkinter.YES)
     
-    image = np.zeros([cam.height,cam.width,3],dtype=np.uint8)   
+    image = np.zeros([canvas_height,canvas_width,3],dtype=np.uint8)   
 
     # interplation = cv2.INTER_CUBIC # scale up use this line
     interplation = cv2.INTER_AREA    # scale down use this line
@@ -107,8 +111,12 @@ if __name__ == '__main__':
     canvas.create_text(10,10,text="canvas frame counter:",fill="red")
     canvas_frame_counter = 0
     canvas_frame_counter_text = canvas.create_text(20,20,text="0",fill="red")
-    update()
+    if cam.IsConnected():
+        update_image()
     tkWindow.mainloop()
+
+    if cam.IsConnected():
+        cam.Close()
 
 
 
