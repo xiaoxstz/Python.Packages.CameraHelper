@@ -60,4 +60,4 @@ if __name__ == '__main__':
         time.sleep(1)
         cam.Close()
     else:
-        print("failed to open the camera")
+        print("failed to connect the camera")

@@ -7,23 +7,27 @@ class CamPylonWrapper:
     def __init__(self) -> None:
         self.__Connected = False
 
-        # connecting to the first available camera
-        self.__camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
-        self.__bExit = False
+        try:
+            # connecting to the first available camera
+            self.__camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
+            self.__bExit = False
 
-        self.__camera.Open()
-        
-        # Grabing continuously (video) with minimal delay
-        self.__camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+            self.__camera.Open()
 
-        # get image size
-        # self.width = self.__camera.Width.GetValue()    # not right value
-        # self.height = self.__camera.Height.GetValue()
-        ret,img = self.get_frame()
-        if ret:
-            self.height = img.shape[0]
-            self.width = img.shape[1]
+            # Grabing continuously (video) with minimal delay
+            self.__camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
+            # get image size
+            # self.width = self.__camera.Width.GetValue()    # not right value
+            # self.height = self.__camera.Height.GetValue()
+            ret,img = self.get_frame()
+            if ret:
+                self.height = img.shape[0]
+                self.width = img.shape[1]
+            self.__Connected = True
+        except Exception as ex:
+            print(ex)
+            self.__Connected = False
     
     def start_grab_thread(self, grabbed_callback):
         self.grab_thread = threading.Thread(target=self.__grab_loop,
@@ -45,20 +49,23 @@ class CamPylonWrapper:
             return None
     
     def get_frame(self,timeout:int=5000):
-        grabResult = self.__camera.RetrieveResult(timeout, pylon.TimeoutHandling_ThrowException)
-        try:
-            if grabResult.GrabSucceeded():
-                img = PylonImageConvert.convert(grabResult)
-                image = img.GetArray()  # shape: (height,width)
-                grabResult.Release()
-                return (True,image)
-            else:
-                grabResult.Release()
-                return (False,None)
-        except Exception as e:
-            print(e)
+        if self.IsConnected():
+            grabResult = self.__camera.RetrieveResult(timeout, pylon.TimeoutHandling_ThrowException)
+            try:
+                if grabResult.GrabSucceeded():
+                    img = PylonImageConvert.convert(grabResult)
+                    image = img.GetArray()  # shape: (height,width)
+                    grabResult.Release()
+                    return (True,image)
+                else:
+                    grabResult.Release()
+                    return (False,None)
+            except Exception as e:
+                print(e)
+                return (False, None)
+        else:
             return (False, None)
-    
+
     def Close(self):
         self.__bExit = True
         # Releasing the resource (not needed)
