@@ -16,9 +16,9 @@ class CameraChooser:
                 camera = CamCommonWrapper(camera_info)
                 bSucceed = True
             elif cameraType == CameraType.PylonWrapper or cameraType == CameraType.PylonFreerun:
+                # Get the transport layer factory.
+                tlFactory = pylon.TlFactory.GetInstance()
                 if camera_obj  is None:
-                    # Get the transport layer factory.
-                    tlFactory = pylon.TlFactory.GetInstance()
                     # Get all attached devices and exit application if no device is found.
                     devices = tlFactory.EnumerateDevices()
                     for device in devices:
@@ -26,7 +26,7 @@ class CameraChooser:
                         if camera_info["Serial Number"] == serial_no:
                             camera_obj = device
 
-                obj = pylon.InstantCamera( pylon.TlFactory.GetInstance().CreateDevice(camera_obj) )            
+                obj = pylon.InstantCamera( tlFactory.CreateDevice(camera_obj) )            
                 if cameraType == CameraType.PylonWrapper:
                     camera = CamPylonWrapper(obj)
                 else:
