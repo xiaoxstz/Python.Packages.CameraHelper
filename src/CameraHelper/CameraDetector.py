@@ -2,18 +2,16 @@ from pygrabber.dshow_graph import FilterGraph
 
 from pypylon import pylon # pip install pypylon
 from pypylon import genicam
-class CameraDetector:
-    def __init__(self) -> None:
-        self.__cam_dict_list = []
-    
-    def find_cameras(self):
-        self.__find_basler_cams()
-        self.__find_directshow_cams()
-    
-    def get_cams(self):
-        return self.__cam_dict_list
+class CameraDetector:   
+    def find_all_cameras(self):
+        basler_dict_list = self.find_basler_cams()
+        directshow_dict_list =self.find_directshow_cams()
 
-    def __find_directshow_cams(self):
+        cam_dict_list = basler_dict_list + directshow_dict_list
+        return cam_dict_list
+
+    def find_directshow_cams(self):
+        cam_dict_list = []
         graph = FilterGraph()
         devices = graph.get_input_devices()
         for i in range(len(devices)):
@@ -21,9 +19,11 @@ class CameraDetector:
             cam_dict['index'] = i
             cam_dict['TL Type'] = "Directshow"
             cam_dict['Model Name'] = devices[i]
-            self.__cam_dict_list.append(cam_dict)
+            cam_dict_list.append(cam_dict)
+        return cam_dict_list
 
-    def __find_basler_cams(self):
+    def find_basler_cams(self):
+        cam_dict_list = []
         try:
             # Get the transport layer factory.
             tlFactory = pylon.TlFactory.GetInstance()
@@ -46,15 +46,16 @@ class CameraDetector:
                 else:
                     cam_dict["TL Type"] = tl_type
 
-                self.__cam_dict_list.append(cam_dict)   
+            cam_dict_list.append(cam_dict)
+            
         except genicam.GenericException as e:
             # Error handling.
             print("An exception occurred.", e.args[0])
+        return cam_dict_list 
 
 if __name__ == '__main__':
     cam_detector = CameraDetector()
-    cam_detector.find_cameras()
-    cam_dict_list = cam_detector.get_cams()
+    cam_dict_list = cam_detector.find_all_cameras()
     for cam_dict in cam_dict_list:
         print("camera:")
         for key,value in cam_dict.items():
