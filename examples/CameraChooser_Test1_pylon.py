@@ -18,7 +18,7 @@ if __name__ == '__main__':
         camera_info = camera_info_list[0]
         camera_obj = cam_obj_list[0]
         
-        bSucceed, camera = CameraChooser.Choose(CameraType.PylonFreerun,camera_info,camera_obj)
+        bSucceed, camera = CameraChooser.Choose(CameraType.PylonFreerun,camera_info)
         if camera.IsConnected():
             camera.start_grab_thread(SampleImageEventHandler)
             import time

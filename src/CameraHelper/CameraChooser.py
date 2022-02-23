@@ -8,7 +8,7 @@ from pypylon import pylon # pip install pypylon
 from pypylon import genicam
 
 class CameraChooser:
-    def Choose(cameraType:CameraType,camera_info:dict,camera_obj=None):
+    def Choose(cameraType:CameraType,camera_info:dict):
         bSucceed = False
         camera = None
         try:
@@ -16,21 +16,23 @@ class CameraChooser:
                 camera = CamCommonWrapper(camera_info)
                 bSucceed = True
             elif cameraType == CameraType.PylonWrapper or cameraType == CameraType.PylonFreerun:
+                pylon_device_info = None
+
                 # Get the transport layer factory.
                 tlFactory = pylon.TlFactory.GetInstance()
-                if camera_obj  is None:
-                    # Get all attached devices and exit application if no device is found.
-                    devices = tlFactory.EnumerateDevices()
-                    for device in devices:
-                        serial_no = device.GetSerialNumber()
-                        if camera_info["Serial Number"] == serial_no:
-                            camera_obj = device
-
-                obj = pylon.InstantCamera( tlFactory.CreateDevice(camera_obj) )            
-                if cameraType == CameraType.PylonWrapper:
-                    camera = CamPylonWrapper(obj)
-                else:
-                    camera = CamPylonFreerun(obj)
+                # Get all attached devices and exit application if no device is found.
+                device_info_list = tlFactory.EnumerateDevices()
+                for info in device_info_list:
+                    serial_no = info.GetSerialNumber()
+                    if camera_info["Serial Number"] == serial_no:
+                        pylon_device_info = info
+                
+                if pylon_device_info is not None:
+                    obj = pylon.InstantCamera( tlFactory.CreateDevice(pylon_device_info) )            
+                    if cameraType == CameraType.PylonWrapper:
+                        camera = CamPylonWrapper(obj)
+                    else:
+                        camera = CamPylonFreerun(obj)
             else: 
                 pass
             
