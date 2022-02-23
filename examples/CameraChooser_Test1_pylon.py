@@ -13,10 +13,9 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
         pass
 
 if __name__ == '__main__':
-    camera_info_list,cam_obj_list = CameraDetector.find_basler_cams()
+    camera_info_list= CameraDetector.find_basler_cams()
     if len(camera_info_list) > 0:
         camera_info = camera_info_list[0]
-        camera_obj = cam_obj_list[0]
         
         bSucceed, camera = CameraChooser.Choose(CameraType.PylonFreerun,camera_info)
         if camera.IsConnected():

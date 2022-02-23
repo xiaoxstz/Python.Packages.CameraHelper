@@ -5,18 +5,15 @@ from pypylon import genicam
 class CameraDetector:   
     def find_all_cameras():
         cam_dict_list = []
-        cam_obj_list = []
 
-        basler_dict_list,balser_obj_list = CameraDetector.find_basler_cams()
-        directshow_dict_list,directshow_obj_list = CameraDetector.find_directshow_cams()
+        basler_dict_list = CameraDetector.find_basler_cams()
+        directshow_dict_list = CameraDetector.find_directshow_cams()
 
         cam_dict_list = basler_dict_list + directshow_dict_list
-        cam_obj_list = balser_obj_list + directshow_obj_list
-        return cam_dict_list, cam_obj_list
+        return cam_dict_list
 
     def find_directshow_cams():
         cam_dict_list = []
-        cam_obj_list = []
         graph = FilterGraph()
         devices = graph.get_input_devices()
         for i in range(len(devices)):
@@ -25,11 +22,10 @@ class CameraDetector:
             cam_dict['TL Type'] = "Directshow"
             cam_dict['Model Name'] = devices[i]
             cam_dict_list.append(cam_dict)
-        return cam_dict_list,cam_obj_list
+        return cam_dict_list
 
     def find_basler_cams():
         cam_dict_list = []
-        cam_obj_list = []
         try:
             # Get the transport layer factory.
             tlFactory = pylon.TlFactory.GetInstance()
@@ -53,12 +49,11 @@ class CameraDetector:
                     cam_dict["TL Type"] = tl_type
 
                 cam_dict_list.append(cam_dict)
-                cam_obj_list.append(cam)
             
         except genicam.GenericException as e:
             # Error handling.
             print("An exception occurred.", e.args[0])
-        return cam_dict_list , cam_obj_list
+        return cam_dict_list
 
 if __name__ == '__main__':
     cam_dict_list,cam_obj_list = CameraDetector.find_all_cameras()
