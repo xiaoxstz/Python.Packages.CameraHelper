@@ -2,10 +2,14 @@
 import cv2
 import threading
 class CamCommonWrapper:
-    def __init__(self, video_source=0):
+    def __init__(self, camera_info:dict):
         self.__Connected = False
+        if camera_info['TL Type'] != "Directshow":
+            self.__Connected = False
+            return
+        
         # Open the video source
-        self.__camera = cv2.VideoCapture(video_source,cv2.CAP_DSHOW)
+        self.__camera = cv2.VideoCapture(camera_info["index"],cv2.CAP_DSHOW)
         if self.__camera.isOpened():
             # Get video source width and height
             self.width = int(self.__camera.get(cv2.CAP_PROP_FRAME_WIDTH))

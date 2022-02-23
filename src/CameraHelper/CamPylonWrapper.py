@@ -4,27 +4,13 @@ import threading
 from .PylonImageConvert import PylonImageConvert
 
 class CamPylonWrapper:
-    def __init__(self,camera_info:dict) -> None:
+    def __init__(self,camera_obj) -> None:
         self.__Connected = False
 
         try:
-            self.__bExit = False
-            # Get the transport layer factory.
-            tlFactory = pylon.TlFactory.GetInstance()
-
-            # Get all attached devices and exit application if no device is found.
-            devices = tlFactory.EnumerateDevices()
-            if len(devices) == 0:
-                raise pylon.RuntimeException("No camera present.")
-            else:
-                for cam in devices:
-                    serial_no = cam.GetSerialNumber()
-                    if serial_no == camera_info["Serial Number"]:
-                        self.__camera = cam
-                        break
-
+            self.__camera = camera_obj
             self.__camera.Open()
-
+            
             # Grabing continuously (video) with minimal delay
             self.__camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
@@ -36,6 +22,7 @@ class CamPylonWrapper:
                 self.height = img.shape[0]
                 self.width = img.shape[1]
             self.__Connected = True
+            self.__bExit = False
         except Exception as ex:
             print(ex)
             self.__Connected = False

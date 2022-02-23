@@ -3,40 +3,39 @@ from .CamPylonWrapper import CamPylonWrapper
 from .CamCommonWrapper import CamCommonWrapper
 from .CameraType import CameraType
 from .CamPylonFreerun import CamPylonFreerun
-from .CameraDetector import CameraDetector
+
+from pypylon import pylon # pip install pypylon
+from pypylon import genicam
 
 class CameraChooser:
-    def Choose(cameraType:CameraType):
+    def Choose(cameraType:CameraType,camera_info:dict,camera_obj=None):
         bSucceed = False
         camera = None
-        camera_detector = CameraDetector()
         try:
             if cameraType == CameraType.CommonWrapper:
-                camera = CamCommonWrapper()
+                camera = CamCommonWrapper(camera_info)
                 bSucceed = True
             elif cameraType == CameraType.PylonWrapper or cameraType == CameraType.PylonFreerun:
-                basler_dict_list = camera_detector.find_basler_cams()
-                if len(basler_dict_list) == 0:
-                    pass
-                elif len(basler_dict_list) == 1:
-                    if cameraType == CameraType.PylonWrapper:
-                        camera = CamPylonWrapper(basler_dict_list[0])
-                        bSucceed = True
-                    elif cameraType == CameraType.PylonFreerun:
-                        camera = CamPylonFreerun(basler_dict_list[0])
-                        if camera.IsConnected():
-                            bSucceed = True
-                        else:
-                            bSucceed = False
+                if camera_obj  is None:
+                    # Get the transport layer factory.
+                    tlFactory = pylon.TlFactory.GetInstance()
+                    # Get all attached devices and exit application if no device is found.
+                    devices = tlFactory.EnumerateDevices()
+                    for device in devices:
+                        serial_no = device.GetSerialNumber()
+                        if camera_info["Serial Number"] == serial_no:
+                            camera_obj = device
+                
+                if cameraType == CameraType.PylonWrapper:
+                    camera = CamPylonWrapper(camera_obj)
                 else:
-                    pass
-            elif cameraType == CameraType.PylonFreerun:
-                camera = CamPylonFreerun()
-                if camera.IsConnected():
-                    bSucceed = True
-                else:
-                    bSucceed = False
+                    camera = CamPylonFreerun(camera_obj)
             else: 
+                pass
+            
+            if camera is not None and camera.IsConnected():
+                bSucceed = True
+            else:
                 bSucceed = False
         except RuntimeError as ex:
             print(ex)
@@ -44,4 +43,5 @@ class CameraChooser:
         except Exception as ex:
             print(ex)
             bSucceed = False
+        
         return (bSucceed,camera)
