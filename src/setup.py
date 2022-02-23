@@ -7,7 +7,8 @@ cur_path = sys.argv[1]
 module_list= ["./CameraHelper/CamCommonWrapper.py",
               "./CameraHelper/CamPylonFreerun.py",
               "./CameraHelper/CamPylonWrapper.py",
-              "./CameraHelper/PylonImageConvert.py"]
+              "./CameraHelper/PylonImageConvert.py",
+              "./CameraHelper/CameraDetector.py"]
 
 setup(
     name='CameraHelper',
