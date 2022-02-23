@@ -4,11 +4,23 @@ from pypylon import pylon # pip install pypylon
 from pypylon import genicam
 
 class CamPylonFreerun:
-    def __init__(self) -> None:
+    def __init__(self,camera_info:dict) -> None:
         self.__Connected = False
         try:
-            # Create an instant camera object for the camera device found first.
-            self.__camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
+            # Get the transport layer factory.
+            tlFactory = pylon.TlFactory.GetInstance()
+
+            # Get all attached devices and exit application if no device is found.
+            devices = tlFactory.EnumerateDevices()
+            if len(devices) == 0:
+                raise pylon.RuntimeException("No camera present.")
+            else:
+                for cam in devices:
+                    serial_no = cam.GetSerialNumber()
+                    if serial_no == camera_info["Serial Number"]:
+                        self.__camera = cam
+                        break
+            
             self.__camera.Open()
             self.width = self.__camera.Width.GetValue() 
             self.height = self.__camera.Height.GetValue()
@@ -45,19 +57,3 @@ class CamPylonFreerun:
     def IsConnected(self):
         return self.__Connected
 
-
-class SampleImageEventHandler(pylon.ImageEventHandler):
-    def OnImageGrabbed(self, camera, grabResult):
-        """this function should not put the code that costs too much time"""
-        print("OnImageGrabbed")
-
-if __name__ == '__main__':
-    cam = CamPylonFreerun()
-    if cam.IsConnected():
-        cam.start_grab_thread(SampleImageEventHandler)
-        print(f"image size: ({cam.height},{cam.width})")
-        import time
-        time.sleep(1)
-        cam.Close()
-    else:
-        print("failed to connect the camera")
