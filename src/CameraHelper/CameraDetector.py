@@ -3,14 +3,14 @@ from pygrabber.dshow_graph import FilterGraph
 from pypylon import pylon # pip install pypylon
 from pypylon import genicam
 class CameraDetector:   
-    def find_all_cameras(self):
-        basler_dict_list = self.find_basler_cams()
-        directshow_dict_list =self.find_directshow_cams()
+    def find_all_cameras():
+        basler_dict_list = CameraDetector.find_basler_cams()
+        directshow_dict_list = CameraDetector.find_directshow_cams()
 
         cam_dict_list = basler_dict_list + directshow_dict_list
         return cam_dict_list
 
-    def find_directshow_cams(self):
+    def find_directshow_cams():
         cam_dict_list = []
         graph = FilterGraph()
         devices = graph.get_input_devices()
@@ -22,7 +22,7 @@ class CameraDetector:
             cam_dict_list.append(cam_dict)
         return cam_dict_list
 
-    def find_basler_cams(self):
+    def find_basler_cams():
         cam_dict_list = []
         try:
             # Get the transport layer factory.
