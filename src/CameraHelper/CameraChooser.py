@@ -25,11 +25,12 @@ class CameraChooser:
                         serial_no = device.GetSerialNumber()
                         if camera_info["Serial Number"] == serial_no:
                             camera_obj = device
-                
+
+                obj = pylon.InstantCamera( pylon.TlFactory.GetInstance().CreateDevice(camera_obj) )            
                 if cameraType == CameraType.PylonWrapper:
-                    camera = CamPylonWrapper(camera_obj)
+                    camera = CamPylonWrapper(obj)
                 else:
-                    camera = CamPylonFreerun(camera_obj)
+                    camera = CamPylonFreerun(obj)
             else: 
                 pass
             
