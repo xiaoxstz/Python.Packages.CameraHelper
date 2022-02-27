@@ -39,7 +39,7 @@ class CameraDetector:
                 cam_dict = dict()
                 cam_dict["User Name"] = cam.GetUserDefinedName()
                 cam_dict["Serial Number"] = cam.GetSerialNumber()
-                cam_dict["Verdor"] = cam.GetVendorName()
+                cam_dict["Vendor"] = cam.GetVendorName()
                 cam_dict["Model Name"] = cam.GetModelName()
 
                 tl_type = cam.GetTLType()
