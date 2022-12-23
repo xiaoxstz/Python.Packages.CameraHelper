@@ -59,7 +59,10 @@ def grabbed_callback(frame):
     print("--grabbed_callback")
 
 if __name__ == '__main__':
-    cam = CamCommonWrapper()
+    camera_info=dict()
+    camera_info['TL Type'] = "Directshow"
+    camera_info["index"] = 0
+    cam = CamCommonWrapper(camera_info)
     if cam.IsConnected():
         cam.start_grab_thread(grabbed_callback)
     else:
