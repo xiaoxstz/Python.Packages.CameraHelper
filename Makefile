@@ -21,5 +21,8 @@ clean_temp:
 	rm -rf src/*/*.c
 	rm -rf src/*/*.pyd
 
+test:
+	python -m unittest
+
 # Run multiple make commands. Please put them in a row
 all:clean build_dist build clean_temp
