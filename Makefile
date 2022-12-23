@@ -21,6 +21,7 @@ clean_temp:
 	rm -rf src/*/*.c
 	rm -rf src/*/*.pyd
 
+# Run unit test
 test:
 	python -m unittest
 
