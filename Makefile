@@ -11,11 +11,15 @@ build_dist:
 clean:
 	make clean_temp
 	rm -rf dist
+	rm -rf */__pycache__
 
 # clean all the temporary files
 clean_temp:
 	rm -rf ./src/build
 	rm -rf src/*.egg-info
+	rm -rf src/*/__pycache__
+	rm -rf src/*/*.c
+	rm -rf src/*/*.pyd
 
 # Run multiple make commands. Please put them in a row
 all:clean build_dist build clean_temp
