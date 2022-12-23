@@ -1,6 +1,8 @@
 # cython: language_level=3
 import cv2
 import threading
+
+
 class CamCommonWrapper:
     def __init__(self, camera_info:dict):
         self.__Connected = False
