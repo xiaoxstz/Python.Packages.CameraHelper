@@ -1,6 +1,6 @@
-name: NuGet.org Issue
-description: Report issues on NuGet.org
-title: "[NuGet.org Bug]: "
+name: CameraHelper Issue
+description: Report issues on CameraHelper
+title: "[CameraHelper Bug]: "
 labels: ["Type:Bug"]
 body:
   - type: markdown
@@ -10,9 +10,6 @@ body:
 
        The more detail you provide, the more likely it will be for us to be able to identify what is going on and how to solve it!
 
-       ### For issues connecting to NuGet.org, please refer to [this guide](https://docs.microsoft.com/en-us/nuget/nuget-org/nuget-org-faq#nuget.org-not-accessible).
-
-       ### For issues regarding your NuGet.org account, please refer to [this guide](https://docs.microsoft.com/en-us/nuget/nuget-org/nuget-org-faq#nuget.org-account-management).
   - type: dropdown
     id: impact
     attributes:
@@ -20,7 +17,7 @@ body:
       multiple: false
       description: How does this issue impact you?
       options:
-        - I'm unable to use NuGet.org
+        - I'm unable to use CameraHelper
         - It's more difficult to complete my work
         - It bothers me. A fix would be nice
         - Other
