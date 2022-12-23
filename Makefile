@@ -28,7 +28,7 @@ test:
 # check code
 # flake8: pip install flake8
 lint:
-	flake8 src/ tests/ examples/ --count --statistics
+	flake8 --ignore=E501 src/ tests/ examples/ --count --statistics --exclude=src/*/__init__.py
 
 # only check Error(E) and Fatal(F)
 error:
