@@ -32,7 +32,7 @@ def update_image():
             width=canvas_width, height=canvas_height, data=tk_photo_Data, format="PPM"
         )
         canvas.itemconfig(canvas_img, image=tk_photo)
-    tkWindow.after(10, update)
+    tkWindow.after(10, update_image)
 
 
 if __name__ == "__main__":
