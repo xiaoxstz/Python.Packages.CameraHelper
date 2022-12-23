@@ -26,6 +26,7 @@ test:
 	python -m unittest
 
 # check code style
+# flake8: pip install flake8
 lint:
 	flake8 src/ tests/ examples/
 
