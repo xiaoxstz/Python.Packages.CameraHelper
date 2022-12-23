@@ -39,4 +39,4 @@ format:
 	black src/ tests/ examples/
 
 # Run multiple make commands. Please put them in a row
-all:clean build_dist build clean_temp
+all:clean bin build clean_temp
