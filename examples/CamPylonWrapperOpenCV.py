@@ -2,7 +2,7 @@ from CameraHelper import CamPylonWrapper
 import cv2
 import numpy as np
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     win_name = "camera"
     cam = CamPylonWrapper()
     if cam.IsConnected():

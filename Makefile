@@ -35,7 +35,7 @@ lint_error:
 
 # formatters choices:black,autopep8,prettier,yapf
 formatter:
-	black src/
+	black src/ tests/ examples/
 
 # Run multiple make commands. Please put them in a row
 all:clean build_dist build clean_temp

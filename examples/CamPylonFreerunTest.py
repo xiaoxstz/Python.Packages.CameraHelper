@@ -14,16 +14,18 @@ class SampleImageEventHandler(pylon.ImageEventHandler):
             print(f"OnImageGrabbed, frame:{frame_counter}")
         else:
             pass
-    
+
     def test(self):
         pass
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     frame_counter = 0
     cam = CamPylonFreerun()
     if cam.IsConnected():
         cam.start_grab_thread(SampleImageEventHandler)
         import time
+
         bExit = False
         while not bExit:
             time.sleep(1)
