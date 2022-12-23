@@ -29,7 +29,7 @@ then it will create a folder `dist` and a folder `mypackage.egg-info`
 
 # 2. Build with Makefile
 Makefile provides the commands below
-* `make build_dist`: build into binary files
+* `make bin`: build into binary files
 * `make build`: build the wheel file
 * `make all`: run the comands at one time. When it completes, we can find the wheel in the folder `dist`
 * `make clean_temp`: clean all the temporary files
