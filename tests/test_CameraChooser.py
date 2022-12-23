@@ -52,7 +52,9 @@ class Test(unittest.TestCase):
             print("found no basler camera")
     
     def test_CommonWrapper(self):
-        camera_info = dict()
+        camera_info=dict()
+        camera_info['TL Type'] = "Directshow"
+        camera_info["index"] = 0
         bSucceed, camera = CameraChooser.Choose(CameraType.CommonWrapper,camera_info)
         if bSucceed and camera.IsConnected():
             camera.start_grab_thread(SampleImageEventHandler)
