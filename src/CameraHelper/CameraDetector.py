@@ -1,8 +1,10 @@
 from pygrabber.dshow_graph import FilterGraph
 
-from pypylon import pylon # pip install pypylon
+from pypylon import pylon  # pip install pypylon
 from pypylon import genicam
-class CameraDetector:   
+
+
+class CameraDetector:
     def find_all_cameras():
         cam_dict_list = []
 
@@ -18,9 +20,9 @@ class CameraDetector:
         devices = graph.get_input_devices()
         for i in range(len(devices)):
             cam_dict = dict()
-            cam_dict['index'] = i
-            cam_dict['TL Type'] = "Directshow"
-            cam_dict['Model Name'] = devices[i]
+            cam_dict["index"] = i
+            cam_dict["TL Type"] = "Directshow"
+            cam_dict["Model Name"] = devices[i]
             cam_dict_list.append(cam_dict)
         return cam_dict_list
 
@@ -49,15 +51,16 @@ class CameraDetector:
                     cam_dict["TL Type"] = tl_type
 
                 cam_dict_list.append(cam_dict)
-            
+
         except genicam.GenericException as e:
             # Error handling.
             print("An exception occurred.", e.args[0])
         return cam_dict_list
 
-if __name__ == '__main__':
-    cam_dict_list,cam_obj_list = CameraDetector.find_all_cameras()
+
+if __name__ == "__main__":
+    cam_dict_list, cam_obj_list = CameraDetector.find_all_cameras()
     for cam_dict in cam_dict_list:
         print("camera:")
-        for key,value in cam_dict.items():
+        for key, value in cam_dict.items():
             print(f"{key}:{value}")

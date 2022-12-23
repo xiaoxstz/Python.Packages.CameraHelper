@@ -31,7 +31,11 @@ lint:
 	flake8 src/ tests/ examples/ --statistics
 
 lint_error:
-	flake8 src/ tests/ examples/ --statistics --ignore=W291,W292,W293,W391,
+	flake8 src/ tests/ examples/ --statistics --ignore=W291,W292,W293,W391
+
+# formatters choices:black,autopep8,prettier,yapf
+formatter:
+	black src/
 
 # Run multiple make commands. Please put them in a row
 all:clean build_dist build clean_temp
