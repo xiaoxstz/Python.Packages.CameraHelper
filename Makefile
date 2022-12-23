@@ -31,7 +31,7 @@ lint:
 	flake8 src/ tests/ examples/ --statistics
 
 error:
-	flake8 src/ tests/ examples/ --statistics --ignore=W291,W292,W293,W391
+	flake8 src/ tests/ examples/ --statistics --ignore=W291,W292,W293,W391,E501
 
 # formatters choices:black,autopep8,prettier,yapf
 format:

@@ -1,6 +1,4 @@
-from cgitb import text
 from turtle import update
-from CameraHelper import PylonImageConvert
 from CameraHelper import CamPylonFreerun
 from pypylon import pylon
 import numpy as np

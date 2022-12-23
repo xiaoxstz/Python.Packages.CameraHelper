@@ -5,7 +5,6 @@ from .CameraType import CameraType
 from .CamPylonFreerun import CamPylonFreerun
 
 from pypylon import pylon  # pip install pypylon
-from pypylon import genicam
 
 
 class CameraChooser:
@@ -17,8 +16,8 @@ class CameraChooser:
                 camera = CamCommonWrapper(camera_info)
                 bSucceed = True
             elif (
-                cameraType == CameraType.PylonWrapper
-                or cameraType == CameraType.PylonFreerun
+                cameraType == CameraType.PylonWrapper or 
+                cameraType == CameraType.PylonFreerun
             ):
                 pylon_device_info = None
 

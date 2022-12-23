@@ -1,8 +1,6 @@
 # cython: language_level=3
 from enum import IntEnum
 
-from CameraHelper import CamPylonFreerun
-
 
 class CameraType(IntEnum):
     CommonWrapper = (0x0,)

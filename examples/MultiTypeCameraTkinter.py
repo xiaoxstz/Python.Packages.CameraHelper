@@ -11,6 +11,7 @@ import cv2
 import numpy as np
 from pypylon import pylon
 
+
 # region image grabbed callback
 def grabbed_callback(frame):
     global image
