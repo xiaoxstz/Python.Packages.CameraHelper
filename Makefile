@@ -25,5 +25,9 @@ clean_temp:
 test:
 	python -m unittest
 
+# check code style
+lint:
+	flake8 src/ tests/ examples/
+
 # Run multiple make commands. Please put them in a row
 all:clean build_dist build clean_temp
