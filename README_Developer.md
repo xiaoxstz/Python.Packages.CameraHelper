@@ -27,6 +27,11 @@ python -m build
 then it will create a folder `dist` and a folder `mypackage.egg-info`
 * there are `*.tar.gz` and `*.whl` in the folder `dist`
 
+You have to ensure the internet is fine when running this command.Because it needs internet to install the packages to the isolated environment,according to the output message below.
+  ```txt
+  * Creating venv isolated environment...
+  * Installing packages in isolated environment... (setuptools>=42, wheel) 
+  ```
 # 2. Build with Makefile
 Makefile provides the commands below
 * `make bin`: build into binary files
