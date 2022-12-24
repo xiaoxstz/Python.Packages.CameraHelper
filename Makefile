@@ -11,15 +11,16 @@ bin:
 clean:
 	make clean_temp
 	rm -rf dist
-	rm -rf */__pycache__
 
 # clean all the temporary files
 clean_temp:
 	rm -rf ./src/build
 	rm -rf src/*.egg-info
+	rm -rf */__pycache__
 	rm -rf src/*/__pycache__
 	rm -rf src/*/*.c
 	rm -rf src/*/*.pyd
+	rm -rf src/*/*.pyi
 
 # Run unit test
 test:
@@ -41,7 +42,7 @@ format:
 # generate files for IDE's code hint if replacing .py files with .pyd files
 # pip install mypy
 stub:
-	stubgen src/ -o src/
+	stubgen src/ -o src/CameraHelper
 
 # Run multiple make commands. Please put them in a row
 # all:clean bin build clean_temp
