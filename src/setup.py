@@ -7,11 +7,16 @@ import sys,os
 cur_path = sys.path[0]
 os.chdir(cur_path)
 
+# --------------- user define -------------
+module_list = ["CameraHelper",]
+# --------------- user define end-------------
+
 # para = sys.argv[1]
-file_patterns =["./CameraHelper/*.py",]
 file_list = []
-for pattern in file_patterns:
-    file_list += glob.glob(pattern)
+for module in module_list:
+    list_include = glob.glob(f"./{module}/*.py")
+    list_exclude = glob.glob(f"./{module}{os.sep}__init__.py")
+    file_list += list(set(list_include)-set(list_exclude))
 
 setup(
     name="CameraHelper",
