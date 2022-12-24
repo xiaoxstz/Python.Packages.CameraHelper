@@ -1,5 +1,5 @@
-name: CameraHelper Issue
-description: Report issues on CameraHelper
+name: Bug Report
+description: Report bug of CameraHelper
 title: "[CameraHelper Bug]: "
 labels: ["Type:Bug"]
 body:
