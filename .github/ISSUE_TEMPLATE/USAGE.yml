@@ -1,7 +1,7 @@
-name: Bug Report
-description: Report bug of CameraHelper
-title: "[CameraHelper Bug]: "
-labels: ["Type:Bug"]
+name: Usage Issue
+description: Question about usages of CameraHelper
+title: "[Usage]: "
+labels: ["Type:Usage"]
 body:
   - type: markdown
     attributes:
@@ -26,15 +26,15 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Describe the bug
-      description: A clear and concise description of what the bug is.
+      label: Describe the issue
+      description: A clear and concise description of what the issue is.
     validations:
       required: true
   - type: textarea
     id: repro
     attributes:
       label: Repro Steps
-      description: What steps can the NuGet team take to reproduce this issue?
+      description: What steps can other people take to reproduce this issue?
       placeholder: |
         Steps to reproduce the behavior:
         1. On this URL '...'
