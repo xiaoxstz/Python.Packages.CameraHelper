@@ -38,7 +38,7 @@ error:
 format:
 	black src/ tests/ examples/
 
-# generate files for IDE's code hint 
+# generate files for IDE's code hint if replacing .py files with .pyd files
 # pip install mypy
 stub:
 	stubgen src/ -o src/
