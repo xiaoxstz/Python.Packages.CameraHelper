@@ -1,10 +1,11 @@
 from setuptools import setup
 from Cython.Build import cythonize
 
-import sys
+import sys,os
+cur_path = sys.path[0]
+os.chdir(cur_path)
 
-cur_path = sys.argv[1]
-
+para = sys.argv[1]
 module_list = [
     "./CameraHelper/CamCommonWrapper.py",
     "./CameraHelper/CamPylonFreerun.py",
