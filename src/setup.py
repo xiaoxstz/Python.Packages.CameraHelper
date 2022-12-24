@@ -12,6 +12,9 @@ module_list = [
     "./CameraHelper/CamPylonWrapper.py",
     "./CameraHelper/PylonImageConvert.py",
     "./CameraHelper/CameraDetector.py",
+    "./CameraHelper/CameraType.py",
+    "./CameraHelper/CameraChooser.py",
+    "./CameraHelper/__init__.py",
 ]
 
 setup(
