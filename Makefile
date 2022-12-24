@@ -17,6 +17,7 @@ clean_temp:
 	rm -rf ./src/build
 	rm -rf src/*.egg-info
 	rm -rf */__pycache__
+	rm -rf src/*.pyi
 	rm -rf src/*/__pycache__
 	rm -rf src/*/*.c
 	rm -rf src/*/*.pyd
