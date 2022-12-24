@@ -9,3 +9,6 @@ dist/
 build/
 *.c
 *.pyd
+
+# for IDE's code hint
+*.pyi

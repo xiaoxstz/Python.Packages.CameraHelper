@@ -38,6 +38,11 @@ error:
 format:
 	black src/ tests/ examples/
 
+# generate files for IDE's code hint 
+# pip install mypy
+stub:
+	stubgen src/ -o src/
+
 # Run multiple make commands. Please put them in a row
 # all:clean bin build clean_temp
-all:bin build
+all:stub bin build
