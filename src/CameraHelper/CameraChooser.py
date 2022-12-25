@@ -15,7 +15,10 @@ class CameraChooser:
             if cameraType == CameraType.CommonWrapper:
                 camera = CamCommonWrapper(camera_info)
                 bSucceed = True
-            elif cameraType == CameraType.PylonWrapper or cameraType == CameraType.PylonFreerun:
+            elif (
+                cameraType == CameraType.PylonWrapper
+                or cameraType == CameraType.PylonFreerun
+            ):
                 pylon_device_info = None
 
                 # Get the transport layer factory.

@@ -5,11 +5,14 @@ import glob  # find path with given pattern
 
 import sys
 import os
+
 cur_path = sys.path[0]
 os.chdir(cur_path)
 
 # --------------- user define -------------
-module_list = ["CameraHelper",]
+module_list = [
+    "CameraHelper",
+]
 # --------------- user define end-------------
 
 # para = sys.argv[1]
