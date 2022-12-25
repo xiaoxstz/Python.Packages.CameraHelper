@@ -1,9 +1,10 @@
 from setuptools import setup
 from Cython.Build import cythonize
 
-import glob # find path with given pattern
+import glob  # find path with given pattern
 
-import sys,os
+import sys
+import os
 cur_path = sys.path[0]
 os.chdir(cur_path)
 
@@ -16,7 +17,7 @@ file_list = []
 for module in module_list:
     list_include = glob.glob(f"./{module}/*.py")
     list_exclude = glob.glob(f"./{module}{os.sep}__init__.py")
-    file_list += list(set(list_include)-set(list_exclude))
+    file_list += list(set(list_include) - set(list_exclude))
 
 setup(
     name="CameraHelper",
