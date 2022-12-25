@@ -43,7 +43,7 @@ format:
 # generate files for IDE's code hint if replacing .py files with .pyd files
 # pip install mypy
 stub:
-	stubgen src/CameraHelper -o src/
+	stubgen src/ -o src/
 
 # Run multiple make commands. Please put them in a row
 # all:clean bin build clean_temp
