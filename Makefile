@@ -30,10 +30,12 @@ test:
 # check code
 # flake8: pip install flake8
 lint:
+	make format
 	flake8 --ignore=E501 src/ tests/ examples/ --count --statistics --exclude=src/*/__init__.py
 
 # only check Error(E) and Fatal(F)
 error:
+	make format
 	flake8 --select E,F --ignore=E501 src/ tests/ examples/ --count --statistics --exclude=src/*/__init__.py
 
 # formatters choices:black,autopep8,prettier,yapf
