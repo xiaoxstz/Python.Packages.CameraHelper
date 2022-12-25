@@ -49,4 +49,4 @@ stub:
 
 # Run multiple make commands. Please put them in a row
 # all:clean bin build clean_temp
-all:stub bin build
+all:error stub bin build
